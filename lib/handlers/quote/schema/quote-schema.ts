@@ -37,7 +37,11 @@ export const QuoteQueryParamsJoi = Joi.object({
   recipient: Joi.string()
     .pattern(new RegExp(/^0x[a-fA-F0-9]{40}$/))
     .optional(),
-  slippageTolerance: Joi.number().min(0).max(20).precision(2).optional(),
+  // No upper bound: minimumAmountOut is amountOut/(1+slippage), which only
+  // asymptotes toward zero, so a large tolerance lowers the caller's floor
+  // rather than removing it. `min(0)` stays because the SDK asserts
+  // slippage >= 0, and Joi.number() already rejects NaN/Infinity.
+  slippageTolerance: Joi.number().min(0).precision(2).optional(),
   deadline: Joi.number().max(10800).optional(), // 180 mins, same as interface max
   algorithm: Joi.string().valid('alpha', 'legacy').optional(),
   gasPriceWei: Joi.string()
