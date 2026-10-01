@@ -45,8 +45,10 @@ The best way to develop and test the API is to deploy your own instance to AWS.
    ```
 3. Install and build the package
    ```
-   npm install && npm run build
+   npm install
+   npm run build
    ```
+   This fork uses `scripts/build.sh` so the TypeChain generation step works in Git Bash on Windows. The original upstream build is still available as `npm run build:upstream`.
 4. To deploy the API run:
    ```
    cdk deploy RoutingAPIStack
